@@ -20,13 +20,24 @@ namespace DiningList
     }
 
     [Fact]
-    public void Test_DatabaseEmptyAtFirst()
+    public void Test1_DatabaseEmptyAtFirst()
     {
       //Arrange, Act
       int result = Restaurant.GetAll().Count;
 
       //Assert
       Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Test2_Equal_ReturnsTrueIfRestaurantsAreTheSame()
+    {
+      //Arrange, Act
+      Restaurant firstRestaurant = new Restaurant("Burger King", "Seattle");
+      Restaurant secondRestaurant = new Restaurant("Burger King", "Seattle");
+
+      //Assert
+      Assert.Equal(firstRestaurant, secondRestaurant);
     }
 
   }

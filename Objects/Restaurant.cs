@@ -17,6 +17,20 @@ namespace DiningList
       _city = City;
     }
 
+    public override bool Equals(System.Object otherRestaurant)
+    {
+      if (!(otherRestaurant is Restaurant))
+      {
+        return false;
+      }
+      else
+      {
+        Restaurant newRestaurant = (Restaurant) otherRestaurant;
+        bool nameEquality = (this.GetName() == newRestaurant.GetName() && this.GetCity() == newRestaurant.GetCity());
+        return (nameEquality);
+      }
+    }
+
     public int GetId()
     {
       return _id;
