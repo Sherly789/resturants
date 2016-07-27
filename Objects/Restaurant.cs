@@ -26,7 +26,7 @@ namespace DiningList
       else
       {
         Restaurant newRestaurant = (Restaurant) otherRestaurant;
-        bool nameEquality = (this.GetName() == newRestaurant.GetName() && this.GetCity() == newRestaurant.GetCity());
+        bool nameEquality = (this.GetName() == newRestaurant.GetName() && this.GetCity() == newRestaurant.GetCity() && this.GetId() == newRestaurant.GetId() );
         return (nameEquality);
       }
     }
@@ -116,6 +116,40 @@ namespace DiningList
       {
         conn.Close();
       }
+    }
+    public static Restaurant Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM restaurants WHERE id = @RestaurantId;", conn);
+      SqlParameter RestaurantIdParameter = new SqlParameter();
+      RestaurantIdParameter.ParameterName = "@RestaurantId";
+      RestaurantIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(RestaurantIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundRestaurantId = 0;
+      string foundRestaurantname = null;
+      string foundRestaurantcity = null;
+      while(rdr.Read())
+      {
+        foundRestaurantId = rdr.GetInt32(0);
+        foundRestaurantname = rdr.GetString(1);
+        foundRestaurantcity = rdr.GetString(2);
+      }
+      Restaurant foundRestaurant = new Restaurant(foundRestaurantname, foundRestaurantcity, foundRestaurantId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return foundRestaurant;
     }
 
     public static void DeleteAll()

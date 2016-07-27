@@ -41,7 +41,7 @@ namespace DiningList
     }
 
     [Fact]
-    public void Test_Save_SavesToDatabase()
+    public void Test3_Save_SavesToDatabase()
     {
       //Arrange
       Restaurant testRestaurant = new Restaurant("Burger King", "Seattle");
@@ -54,6 +54,34 @@ namespace DiningList
       //Assert
       Assert.Equal(testList, result);
     }
+
+    [Fact]
+    public void Test4_AssignedIDTOObjects()
+    {
+      //Arrange, Act
+      Restaurant testRestaurant = new Restaurant("Burger King", "Seattle");
+      //Act
+      testRestaurant.Save();
+      Restaurant saveRestaurant = Restaurant.GetAll()[0];
+
+      int result = saveRestaurant.GetId();
+      int testId = testRestaurant.GetId();
+
+      //Assert
+      Assert.Equal(testId, result);
+    }
+    [Fact]
+    public void Test5_Find_FindsRestaurantInDatabase()
+    {
+      //Arrange
+      Restaurant testRestaurant = new Restaurant("Burger King", "Seattle");
+      testRestaurant.Save();
+      //Act
+      Restaurant foundRestaurant = Restaurant.Find(testRestaurant.GetId());
+      //Assert
+      Assert.Equal(testRestaurant, foundRestaurant);
+    }
+
 
   }
 }
