@@ -84,6 +84,40 @@ namespace DiningList
       return allRestaurants;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO restaurants (name, city) OUTPUT INSERTED.id VALUES (@RestaurantName, @RestaurantCity);", conn);
+
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@RestaurantName";
+      nameParameter.Value = this.GetName();
+
+      SqlParameter cityParameter = new SqlParameter();
+      cityParameter.ParameterName = "@RestaurantCity";
+      cityParameter.Value = this.GetCity();
+
+      cmd.Parameters.Add(nameParameter);
+      cmd.Parameters.Add(cityParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

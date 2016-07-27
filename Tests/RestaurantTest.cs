@@ -40,5 +40,20 @@ namespace DiningList
       Assert.Equal(firstRestaurant, secondRestaurant);
     }
 
+    [Fact]
+    public void Test_Save_SavesToDatabase()
+    {
+      //Arrange
+      Restaurant testRestaurant = new Restaurant("Burger King", "Seattle");
+
+      // Act
+      testRestaurant.Save();
+      List<Restaurant> result = Restaurant.GetAll();
+      List<Restaurant> testList = new List<Restaurant>{testRestaurant};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
   }
 }
