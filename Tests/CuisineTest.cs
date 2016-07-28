@@ -26,7 +26,7 @@ namespace DiningList
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueForSameName()
+    public void Test2_Equal_ReturnsTrueForSameName()
     {
       //Arrange, Act
       Cuisine firstCuisine = new Cuisine("Fast Food");
@@ -34,6 +34,21 @@ namespace DiningList
 
       // Assert
       Assert.Equal(firstCuisine, secondCuisine);
+    }
+
+    [Fact]
+    public void Test3_Save_SavesCuisineToDatabase()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Fast Food");
+      testCuisine.Save();
+
+      //Act
+      List<Cuisine> result = Cuisine.GetAll();
+      List<Cuisine> testList = new List<Cuisine>{testCuisine};
+
+      //Assert
+      Assert.Equal(testList, result);
     }
   }
 }
