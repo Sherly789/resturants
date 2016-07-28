@@ -9,12 +9,14 @@ namespace DiningList
     private int _id;
     private string _name;
     private string _city;
+    private int _cuisineId;
 
-    public Restaurant(string Name, string City, int Id = 0)
+    public Restaurant(string Name, string City, int CuisineId, int Id = 0)
     {
       _id = Id;
       _name = Name;
       _city = City;
+      _cuisineId = CuisineId;
     }
 
     public override bool Equals(System.Object otherRestaurant)
@@ -26,7 +28,7 @@ namespace DiningList
       else
       {
         Restaurant newRestaurant = (Restaurant) otherRestaurant;
-        bool nameEquality = (this.GetName() == newRestaurant.GetName() && this.GetCity() == newRestaurant.GetCity() && this.GetId() == newRestaurant.GetId() );
+        bool nameEquality = (this.GetName() == newRestaurant.GetName() && this.GetCity() == newRestaurant.GetCity() && this.GetCuisineId() == newRestaurant.GetCuisineId() && this.GetId() == newRestaurant.GetId() );
         return (nameEquality);
       }
     }
@@ -53,6 +55,16 @@ namespace DiningList
       _city = newCity;
     }
 
+    public int GetCuisineId()
+    {
+      return _cuisineId;
+    }
+
+    public void SetCity(int newCuisineId)
+    {
+      _cuisineId = newCuisineId;
+    }
+
     public static List<Restaurant> GetAll()
     {
       List<Restaurant> allRestaurants = new List<Restaurant>{};
@@ -68,7 +80,8 @@ namespace DiningList
         int restaurantId = rdr.GetInt32(0);
         string restaurantName = rdr.GetString(1);
         string restaurantCity = rdr.GetString(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCity, restaurantId);
+        int restaurantCuisineId = rdr.GetInt32(3);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCity, restaurantCuisineId, restaurantId);
         allRestaurants.Add(newRestaurant);
       }
 
@@ -89,7 +102,7 @@ namespace DiningList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO restaurants (name, city) OUTPUT INSERTED.id VALUES (@RestaurantName, @RestaurantCity);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO restaurants (name, city, cuisine_id) OUTPUT INSERTED.id VALUES (@RestaurantName, @RestaurantCity, @RestaurantCuisineId);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@RestaurantName";
@@ -99,8 +112,13 @@ namespace DiningList
       cityParameter.ParameterName = "@RestaurantCity";
       cityParameter.Value = this.GetCity();
 
+      SqlParameter cuisineIdParameter = new SqlParameter();
+      cuisineIdParameter.ParameterName = "@RestaurantCuisineId";
+      cuisineIdParameter.Value = this.GetCuisineId();
+
       cmd.Parameters.Add(nameParameter);
       cmd.Parameters.Add(cityParameter);
+      cmd.Parameters.Add(cuisineIdParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -130,15 +148,19 @@ namespace DiningList
       SqlDataReader rdr = cmd.ExecuteReader();
 
       int foundRestaurantId = 0;
-      string foundRestaurantname = null;
-      string foundRestaurantcity = null;
+      string foundRestaurantName = null;
+      string foundRestaurantCity = null;
+      int foundRestaurantCuisineId = 0;
+
       while(rdr.Read())
       {
         foundRestaurantId = rdr.GetInt32(0);
-        foundRestaurantname = rdr.GetString(1);
-        foundRestaurantcity = rdr.GetString(2);
+        foundRestaurantName = rdr.GetString(1);
+        foundRestaurantCity = rdr.GetString(2);
+        foundRestaurantCuisineId = rdr.GetInt32(3);
+
       }
-      Restaurant foundRestaurant = new Restaurant(foundRestaurantname, foundRestaurantcity, foundRestaurantId);
+      Restaurant foundRestaurant = new Restaurant(foundRestaurantName, foundRestaurantCity, foundRestaurantCuisineId, foundRestaurantId);
 
       if (rdr != null)
       {
