@@ -52,7 +52,7 @@ namespace DiningList
     }
 
     [Fact]
-    public void Test_Save_AssignsIdToCuisineObject()
+    public void Test4_Save_AssignsIdToCuisineObject()
     {
       //Arrange
       Cuisine testCuisine = new Cuisine("Fast Food");
@@ -66,6 +66,20 @@ namespace DiningList
 
       //Assert
       Assert.Equal(testId, result);
+    }
+
+    [Fact]
+    public void Test5_Find_FindsCuisineInDatabase()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Fast Food");
+      testCuisine.Save();
+
+      //Act
+      Cuisine foundCuisine = Cuisine.Find(testCuisine.GetId());
+
+      //Assert
+      Assert.Equal(testCuisine, foundCuisine);
     }
 
   }
