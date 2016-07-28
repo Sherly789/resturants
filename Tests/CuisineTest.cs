@@ -24,5 +24,16 @@ namespace DiningList
       int result = Cuisine.GetAll().Count;
       Assert.Equal(0, result);
     }
+
+    [Fact]
+    public void Test_Equal_ReturnsTrueForSameName()
+    {
+      //Arrange, Act
+      Cuisine firstCuisine = new Cuisine("Fast Food");
+      Cuisine secondCuisine = new Cuisine("Fast Food");
+
+      // Assert
+      Assert.Equal(firstCuisine, secondCuisine);
+    }
   }
 }
