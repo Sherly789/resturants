@@ -50,5 +50,23 @@ namespace DiningList
       //Assert
       Assert.Equal(testList, result);
     }
+
+    [Fact]
+    public void Test_Save_AssignsIdToCuisineObject()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Fast Food");
+      testCuisine.Save();
+
+      //Act
+      Cuisine savedCuisine = Cuisine.GetAll()[0];
+
+      int result = savedCuisine.GetId();
+      int testId = testCuisine.GetId();
+
+      //Assert
+      Assert.Equal(testId, result);
+    }
+
   }
 }
